@@ -538,22 +538,52 @@
         ]   
         };
 
-        // Function to render the menu
+        // Function to render menu items
+        function renderMenuItems(items) {
+            return items.map(item => `
+                <div class="menu-item">
+                    <img src="${item.image}" alt="${item.name}" class="menu-item-image">
+                    <h3>${item.name}</h3>
+                    <p class="myanmar-name">${item.myanmarName}</p>
+                    <p class="price">฿${item.price}</p>
+                </div>
+            `).join('');
+        }
+        
+        // Separate function to render navigation
+        function renderNavigation(data) {
+            const categoryNav = document.getElementById('category-nav');
+            // Clear existing items except the "All" item
+            categoryNav.innerHTML = '<li><a href="#" class="active" data-category="all">All</a></li>';
+            
+            // Add category links
+            data.categories.forEach(category => {
+                const navItem = document.createElement('li');
+                navItem.innerHTML = `<a href="#${category.id}" data-category="${category.id}">${category.name}</a>`;
+                categoryNav.appendChild(navItem);
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.menu-nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update active state
+                    document.querySelectorAll('.menu-nav a').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    renderMenu(menuData, category);
+                });
+            });
+        }
+        
+        // Function to render menu content
         function renderMenu(data, filterCategory = 'all') {
             const menuContainer = document.getElementById('menu-container');
             menuContainer.innerHTML = '';
             
-            // Create navigation
-            const categoryNav = document.getElementById('category-nav');
-            if (categoryNav.childElementCount <= 1) {
-                data.categories.forEach(category => {
-                    const navItem = document.createElement('li');
-                    navItem.innerHTML = `<a href="#${category.id}" data-category="${category.id}">${category.name}</a>`;
-                    categoryNav.appendChild(navItem);
-                });
-            }
-            
-            // Create menu sections
+            // Create menu sections based on filter
             if (filterCategory === 'all') {
                 data.categories.forEach(category => {
                     const section = document.createElement('section');
@@ -586,35 +616,6 @@
                     menuContainer.appendChild(section);
                 }
             }
-            
-            // Update active navigation
-            document.querySelectorAll('.menu-nav a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('data-category') === filterCategory) {
-                    link.classList.add('active');
-                }
-            });
-            
-            // Add event listeners
-            document.querySelectorAll('.menu-nav a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const category = this.getAttribute('data-category');
-                    renderMenu(menuData, category);
-                });
-            });
-        }
-        
-        // Function to render menu items
-        function renderMenuItems(items) {
-            return items.map(item => `
-                <div class="menu-item">
-                    <img src="${item.image}" alt="${item.name}" class="menu-item-image">
-                    <h3>${item.name}</h3>
-                    <p class="myanmar-name">${item.myanmarName}</p>
-                    <p class="price">฿${item.price}</p>
-                </div>
-            `).join('');
         }
         
         // Load menu when page is ready
@@ -635,7 +636,8 @@
                     console.log("Menu data loaded:", data);
                     if (data && data.categories) {
                         menuData = data;
-                        renderMenu(menuData);
+                        renderNavigation(menuData); // Initialize navigation once
+                        renderMenu(menuData);       // Render menu content
                     } else {
                         throw new Error('Menu data format is incorrect');
                     }
@@ -643,7 +645,9 @@
                 .catch(error => {
                     console.error('Error loading menu:', error);
                     // Fall back to demo data if JSON fails to load
-                    renderMenu(fallbackMenuData);
+                    menuData = fallbackMenuData;
+                    renderNavigation(menuData); // Initialize navigation with fallback data
+                    renderMenu(menuData);       // Render menu with fallback data
                 });
             
             // Smooth scrolling for navigation
