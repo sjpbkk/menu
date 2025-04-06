@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shar Joon Pyan - Restaurant Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #d35400;
+            --secondary-color: #34495e;
+            --accent-color: #f39c12;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --dark-bg: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        header {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            background-image: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://placehold.co/1200x400');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+        
+        nav {
+            background-color: var(--secondary-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .menu-nav {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 1rem 0;
+        }
+        
+        .menu-nav li {
+            margin: 0 1rem;
+        }
+        
+        .menu-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+        }
+        
+        .menu-nav a:hover, .menu-nav a.active {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+        }
+        
+        .menu-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-heading {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .menu-item {
+            padding: 1rem;
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .menu-item-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        
+        .menu-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .menu-item .myanmar-name {
+            font-size: 1rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .menu-item .price {
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-top: auto;
+        }
+        
+        footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-info {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-info p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .map-container {
+            margin: 1rem 0;
+        }
+        
+        .map-link {
+            display: inline-block;
+            color: white;
+            background-color: var(--accent-color);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .map-link:hover {
+            background-color: #e67e22;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .social-links li {
+            margin: 0 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Loading indicator */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+        
+        .loading i {
+            animation: spin 1s infinite linear;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Messenger Chat Bubble Styles */
+        #fb-chat-bubble {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .messenger-bubble {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #0084ff;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .messenger-bubble i {
+            font-size: 30px;
+        }
+        
+        .messenger-bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .menu-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .menu-nav li {
+                margin: 0.5rem 0;
+            }
+            
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Shar Joon Pyan</h1>
+            <p class="tagline">Authentic Asian Cuisine</p>
+        </div>
+    </header>
+    
+    <nav>
+        <ul class="menu-nav" id="category-nav">
+            <!-- Categories will be dynamically loaded here -->
+            <li><a href="#" class="active" data-category="all">All</a></li>
+        </ul>
+    </nav>
+    
+    <main class="container" id="menu-container">
+        <!-- Menu sections will be dynamically loaded here -->
+        <div class="loading">
+            <i class="fas fa-spinner"></i> Loading menu...
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-info">
+                <h3>Shar Joon Pyan</h3>
+                <p><i class="fas fa-clock"></i> Opening Hours: 11:00 AM - 10:00 PM (Closed on Mondays)</p>
+                <p><i class="fas fa-map-marker-alt"></i> RK Food Garden 81</p>
+                <p>183 ซ. สุขุมวิท 81 Phra Khanong Nuea, Watthana, Phra Khanong, Bangkok 10260</p>
+                <p><i class="fas fa-phone"></i> Contact: +66 82 725 2092</p>
+                <div class="map-container">
+                    <a href="https://maps.app.goo.gl/mUiE8G7hi4yjht2C8" 
+                       target="_blank" class="map-link">
+                        <i class="fas fa-map"></i> View on Google Maps
+                    </a>
+                </div>
+            </div>
+            
+            <ul class="social-links">
+                <li><a href="https://www.facebook.com/profile.php?id=61574299868537" target="_blank"><i class="fab fa-facebook"></i></a></li>
+                <!-- <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fab fa-line"></i></a></li> -->
+            </ul>
+        </div>
+    </footer>
+    
+    <!-- Messenger Chat Plugin -->
+    <div id="fb-chat-bubble">
+        <a href="https://www.facebook.com/messages/t/627807497076261" target="_blank" class="messenger-bubble">
+            <i class="fab fa-facebook-messenger"></i>
+        </a>
+    </div>
+    
+    <script>
+        // Replace your current menu loading code with this
+        document.addEventListener('DOMContentLoaded', function() {
+            // First, set a default menu structure
+            let menuData = { categories: [] };
+            
+            // Try to fetch the menu.json file
+            fetch('menu.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load menu.json');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Menu data loaded:", data);
+                    if (data && data.categories) {
+                        menuData = data;
+                        renderMenu(menuData);
+                    } else {
+                        throw new Error('Menu data format is incorrect');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading menu:', error);
+                    // Fall back to demo data if JSON fails to load
+                    renderMenu(fallbackMenuData);
+                });
+        });
+
+        // Function to render the menu
+        function renderMenu(data, filterCategory = 'all') {
+            const menuContainer = document.getElementById('menu-container');
+            menuContainer.innerHTML = '';
+            
+            // Create navigation
+            const categoryNav = document.getElementById('category-nav');
+            if (categoryNav.childElementCount <= 1) {
+                data.categories.forEach(category => {
+                    const navItem = document.createElement('li');
+                    navItem.innerHTML = `<a href="#${category.id}" data-category="${category.id}">${category.name}</a>`;
+                    categoryNav.appendChild(navItem);
+                });
+            }
+            
+            // Create menu sections
+            if (filterCategory === 'all') {
+                data.categories.forEach(category => {
+                    const section = document.createElement('section');
+                    section.id = category.id;
+                    section.className = 'menu-section';
+                    
+                    section.innerHTML = `
+                        <h2 class="section-heading">${category.name}</h2>
+                        <div class="menu-items">
+                            ${renderMenuItems(category.items)}
+                        </div>
+                    `;
+                    
+                    menuContainer.appendChild(section);
+                });
+            } else {
+                const category = data.categories.find(cat => cat.id === filterCategory);
+                if (category) {
+                    const section = document.createElement('section');
+                    section.id = category.id;
+                    section.className = 'menu-section';
+                    
+                    section.innerHTML = `
+                        <h2 class="section-heading">${category.name}</h2>
+                        <div class="menu-items">
+                            ${renderMenuItems(category.items)}
+                        </div>
+                    `;
+                    
+                    menuContainer.appendChild(section);
+                }
+            }
+            
+            // Update active navigation
+            document.querySelectorAll('.menu-nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-category') === filterCategory) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.menu-nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('data-category');
+                    renderMenu(menuData, category);
+                });
+            });
+        }
+        
+        // Function to render menu items
+        function renderMenuItems(items) {
+            return items.map(item => `
+                <div class="menu-item">
+                    <img src="${item.image}" alt="${item.name}" class="menu-item-image">
+                    <h3>${item.name}</h3>
+                    <p class="myanmar-name">${item.myanmarName}</p>
+                    <p class="price">${item.price} B</p>
+                </div>
+            `).join('');
+        }
+        
+        // Load menu on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading from JSON file
+            setTimeout(() => {
+                renderMenu(menuData);
+            }, 500);
+            
+            // Smooth scrolling for navigation
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('a[href^="#"]')) {
+                    e.preventDefault();
+                    
+                    const targetId = e.target.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 60,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
