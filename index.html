@@ -124,19 +124,10 @@
         
         .menu-item-image {
             width: 100%;
-            position: relative;
+            height: 200px;
+            object-fit: cover;
             border-radius: 6px;
             margin-bottom: 1rem;
-            overflow: hidden;
-        }
-
-        .menu-item-image img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
         
         .menu-item h3 {
@@ -261,17 +252,40 @@
         }
         
         @media (max-width: 768px) {
+            nav {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
             .menu-nav {
-                flex-direction: column;
-                align-items: center;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                min-width: min-content;
+                padding: 0.7rem 0.5rem;
             }
             
             .menu-nav li {
-                margin: 0.5rem 0;
+                margin: 0 0.8rem;
+                white-space: nowrap;
+            }
+            
+            .menu-nav a {
+                padding: 0.5rem 0.3rem;
+                font-size: 0.95rem;
             }
             
             .menu-items {
                 grid-template-columns: 1fr;
+            }
+            
+            nav::-webkit-scrollbar {
+                display: none;
+            }
+            
+            nav {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
             }
         }
     </style>
@@ -330,11 +344,12 @@
     </div>
     
     <script>
-        // Replace your current menu loading code with this
-        document.addEventListener('DOMContentLoaded', function() {
+        // Menu data with fallback
+        let menuData = { categories: [] };
 
+        // Fallback menu data in case JSON fails to load
         const fallbackMenuData = {
-                "categories": [{
+            "categories": [{
                 "id": "noodles",
                 "name": "Noodles",
                 "items": [{
@@ -347,7 +362,7 @@
                         "name": "Garlic Oil Vermicelli (Chicken/Pork)",
                         "myanmarName": "ကော်ရည်ခေါက်ဆွဲ (ကြက်/ဝက်)",
                         "price": 80,
-                        "image": "https://placehold.co/300x300"
+                        "image": "images/gov.png"
                     },
                     {
                         "name": "Garlic Oil Dumpling (Chicken/Pork)",
@@ -523,33 +538,6 @@
         ]   
         };
 
-            // First, set a default menu structure
-            let menuData = { categories: [] };
-            
-            // Try to fetch the menu.json file
-            fetch('menu.json')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load menu.json');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Menu data loaded:", data);
-                    if (data && data.categories) {
-                        menuData = data;
-                        renderMenu(menuData);
-                    } else {
-                        throw new Error('Menu data format is incorrect');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading menu:', error);
-                    // Fall back to demo data if JSON fails to load
-                    renderMenu(fallbackMenuData);
-                });
-        });
-
         // Function to render the menu
         function renderMenu(data, filterCategory = 'all') {
             const menuContainer = document.getElementById('menu-container');
@@ -629,12 +617,34 @@
             `).join('');
         }
         
-        // Load menu on page load
+        // Load menu when page is ready
         document.addEventListener('DOMContentLoaded', function() {
-            // Simulate loading from JSON file
-            setTimeout(() => {
-                renderMenu(menuData);
-            }, 500);
+            // Show loading indicator
+            document.getElementById('menu-container').innerHTML = 
+                '<div class="loading"><i class="fas fa-spinner"></i> Loading menu...</div>';
+            
+            // Try to fetch the menu.json file
+            fetch('menu.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load menu.json');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Menu data loaded:", data);
+                    if (data && data.categories) {
+                        menuData = data;
+                        renderMenu(menuData);
+                    } else {
+                        throw new Error('Menu data format is incorrect');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading menu:', error);
+                    // Fall back to demo data if JSON fails to load
+                    renderMenu(fallbackMenuData);
+                });
             
             // Smooth scrolling for navigation
             document.addEventListener('click', function(e) {
