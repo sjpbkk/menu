@@ -344,6 +344,33 @@
     </div>
     
     <script>
+
+        function isMobileDevice() {
+            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1) || 
+                   (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+        }
+
+        function setupMessengerLink() {
+            const messengerLink = document.getElementById('messenger-link');
+            const pageId = '627807497076261';
+            
+            if (isMobileDevice()) {
+                // For mobile devices, try to open the Messenger app
+                messengerLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Try to open Messenger app first
+                    window.location.href = `fb-messenger://user-thread/${pageId}`;
+                    
+                    // Fallback to web URL after a short delay (in case app doesn't open)
+                    setTimeout(function() {
+                        window.location.href = `https://www.facebook.com/messages/t/${pageId}`;
+                    }, 1000);
+                });
+            }
+            // For desktop, keep the default behavior (opening in new tab)
+        }
+
         // Menu data with fallback
         let menuData = { categories: [] };
 
