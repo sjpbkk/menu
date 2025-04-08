@@ -52,6 +52,12 @@
 				"image": "images/gonsc.png"
 			},
 			{
+				"name": "Vermicelli Soup (Chicken/Pork)",
+				"myanmarName": "ကြက်ပေါင်း ကြာဇံပြုတ်",
+				"price": 80,
+				"image": "https://placehold.co/300x300"
+			},
+			{
 				"name": "Gravy Dumpling (Chicken/Pork)",
 				"myanmarName": "ဖက်ထုပ်ကော်ရည်",
 				"price": 80,
@@ -84,19 +90,19 @@
 				"name": "Steamed Chicken Soup",
 				"myanmarName": "ကြက်ပေါင်း",
 				"price": 80,
-				"image": "https://placehold.co/300x300"
+				"image": "images/sc.png"
 			},
 			{
 				"name": "Pork Rib Soup",
 				"myanmarName": "နံရိုးပေါင်း",
 				"price": 80,
-				"image": "https://placehold.co/300x300"
+				"image": "images/prs.png"
 			},
 			{
 				"name": "Steamed Duck Soup",
 				"myanmarName": "ဘဲပေါင်း",
 				"price": 80,
-				"image": "https://placehold.co/300x300"
+				"image": "images/sds.png"
 			}
 		]
 	},
@@ -117,7 +123,7 @@
 				"name": "Pork Rib",
 				"myanmarName": "နံရိုးကင် (၃ချောင်း)",
 				"price": 60,
-				"image": "https://placehold.co/300x300"
+				"image": "images/prbbq.png"
 			},
 			{
 				"name": "Pork Heart",
@@ -133,9 +139,9 @@
 			},
 			{
 				"name": "Pork Small Intestine",
-				"myanmarName": "ဝက်အူနုကင် (၃ ချောင်း)",
+				"myanmarName": "ဝက်အူချိုကင် (၃ ချောင်း)",
 				"price": 45,
-				"image": "https://placehold.co/300x300"
+				"image": "images/psibbq.png"
 			},
 			{
 				"name": "Pork Large Intestine",
